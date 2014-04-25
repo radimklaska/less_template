@@ -1,0 +1,547 @@
+/**********************
+  DEV && PLACEHOLDERS
+***********************/
+
+
+/**********************
+    COLORS & SPACES
+***********************/
+@white1: #ffffff; // White
+@black1: #000000; // Black
+@basetext: #000000; // Base text color
+@a_normal: #1e0fbe; // Normal link color
+@a_visited: #609; // Visited link color
+@a_hover: #1f0fbf; // Hovered link color
+@button_basecolor: #e0e0e0; // Button border
+@radius1: 10px; // Button border radius
+@radius2: 5px; // Other ounded corners
+@vspace: 10px; // General use vertical spacer
+@hspace: 10px; // General use horizontal spacer
+
+//Tables
+@tableBackground: transparent;
+@tableBackgroundEven: transparent;
+@tableBorder: 0px solid transparent;
+@bodyTheadBackground: transparent;
+@bodyBackground: transparent;
+
+
+/**********************
+         MIXINS
+***********************/
+// Drop shadows
+.box-shadow(@shadow) {
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+     -moz-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+.ie7-restore-left-whitespace() {
+  *margin-left: .3em;
+
+  &:first-child {
+    *margin-left: 0;
+  }
+}
+
+// Border Radius
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+// Single Corner Border Radius
+.border-top-left-radius(@radius) {
+  -webkit-border-top-left-radius: @radius;
+      -moz-border-radius-topleft: @radius;
+          border-top-left-radius: @radius;
+}
+.border-top-right-radius(@radius) {
+  -webkit-border-top-right-radius: @radius;
+      -moz-border-radius-topright: @radius;
+          border-top-right-radius: @radius;
+}
+.border-bottom-right-radius(@radius) {
+  -webkit-border-bottom-right-radius: @radius;
+      -moz-border-radius-bottomright: @radius;
+          border-bottom-right-radius: @radius;
+}
+.border-bottom-left-radius(@radius) {
+  -webkit-border-bottom-left-radius: @radius;
+      -moz-border-radius-bottomleft: @radius;
+          border-bottom-left-radius: @radius;
+}
+
+// Single Side Border Radius
+.border-top-radius(@radius) {
+  .border-top-right-radius(@radius);
+  .border-top-left-radius(@radius);
+}
+.border-right-radius(@radius) {
+  .border-top-right-radius(@radius);
+  .border-bottom-right-radius(@radius);
+}
+.border-bottom-radius(@radius) {
+  .border-bottom-right-radius(@radius);
+  .border-bottom-left-radius(@radius);
+}
+.border-left-radius(@radius) {
+  .border-top-left-radius(@radius);
+  .border-bottom-left-radius(@radius);
+}
+
+// Add an alphatransparency value to any background or border color (via Elyse Holladay)
+.background(@color: white, @alpha: 1) {
+  background-color: hsla(hue(@color), saturation(@color), lightness(@color), @alpha);
+}
+
+// IE7 inline-block
+.ie7-inline-block() {
+  *display: inline; /* IE7 inline-block hack */
+  *zoom: 1;
+}
+
+// a width/overflow fix
+.widthfix() {
+  line-height: 0;
+  display: block;
+}
+
+// Button
+.button() {
+  display: inline-block;
+  .ie7-inline-block();
+  margin-bottom: 0; // For input.btn
+  text-align: center;
+  text-shadow: none;
+  font: inherit;
+  vertical-align: middle;
+  border: 3px solid @button_basecolor;
+  *border: 0; // Remove the border to prevent IE7's black border on input:focus
+  border-bottom-color: darken(@button_basecolor, 10%);
+  .border-radius(@radius1);
+  .ie7-restore-left-whitespace(); // Give IE7 some love
+  .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+  padding: 3px 15px;
+  color: @a_normal;
+  //background: @black1 url('../images/button_bg_pink.png') left top repeat-x;
+  background-color: @button_basecolor;
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    color: @a_hover;
+    //background: @black1 none left top repeat-x;
+    background-color: @button_basecolor;
+    text-decoration: none;
+    background-position: 0 -15px;
+    // transition is only when going to hover/focus, otherwise the background
+    // behind the gradient (there for IE<=9 fallback) gets mismatched
+    .transition(background-position .1s linear);
+  }
+
+  // Focus state for keyboard and accessibility
+  &:focus {
+  // Default
+    outline: thin dotted #333;
+  // Webkit
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+
+  // Active state
+  &.active,
+  &:active {
+    outline: 0;
+    .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+  }
+}
+
+// Button grey
+.button_grey() {
+  .button();
+  border: 1px solid #CFCFCF;
+  border-bottom-color: darken(#CFCFCF, 10%);
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    //background: #AAAAAA url('../images/TODO2.png') left top repeat-x;
+    background-position: 0 -15px;
+    // transition is only when going to hover/focus, otherwise the background
+    // behind the gradient (there for IE<=9 fallback) gets mismatched
+    .transition(background-position .1s linear);
+  }
+}
+
+// BASE TABLES
+#page {
+  table {
+    max-width: 100%;
+    background-color: @tableBackground;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100% !important;
+    margin-bottom: @vspace;
+    border: @tableBorder;
+    // Rows
+    tr.odd, tr:nth-child(odd) {
+      background-color: @tableBackground;
+    }
+    tr.even, tr:nth-child(even) {
+      background-color: @tableBackgroundEven;
+    }
+    tr:hover {
+      background-color: @tableBackground;
+    }
+    // Cells
+    th,
+    td {
+      padding: @vspace;
+      text-align: left;
+      vertical-align: top;
+      border: @tableBorder;
+    }
+    th {
+      font-weight: bold;
+    }
+    // Bottom align for column headings
+    thead th {
+      vertical-align: bottom;
+    }
+    // Account for multiple tbody instances
+    thead {
+      background-color: @bodyTheadBackground;
+      td {
+        background-color: @bodyTheadBackground;
+      }
+      tr.odd, tr:nth-child(odd) {
+        background-color: @bodyTheadBackground;
+      }
+      tr.even, tr:nth-child(even) {
+        background-color: @bodyTheadBackground;
+      }
+    }
+    tbody {
+      background-color: @bodyBackground;
+    }
+  }
+}
+
+// Basic styles for views grid format
+.view-content {
+  table.views-view-grid {
+    tr {
+      td, th {
+        border-top: none;
+        padding: 0px;
+        padding-left: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        vertical-align: top;
+        .views-field {
+          text-align: center;
+        }
+      }
+      td.col-1 {
+        padding-left: 0px;
+      }
+    }
+    // Table default styling overrides
+    tr.odd, tr:nth-child(odd) {
+      background-color: transparent;
+    }
+    tr.even, tr:nth-child(even) {
+      background-color: transparent;
+    }
+    th,
+    td {
+      border: none;
+    }
+  }
+}
+
+
+/**********************
+    Basic elements
+***********************/
+root {
+  display: block;
+}
+
+body {
+  //font-family: 'Source Sans Pro';
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.5;
+  color: @basetext;
+  //background: @black1 url('../images/bg.png') left top repeat-x;
+}
+
+hr {
+  background: none repeat scroll 0 0 #5294C1;
+  border: medium none;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 21px;
+}
+
+h2.block-title {
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 17px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+ol {
+  list-style: decimal inside none;
+}
+
+//Reset menu
+ul {
+  &,
+  li,
+  li.leaf{
+    list-style: disc inside none;
+    margin: 0px;
+    padding: 0px;
+  }
+}
+
+.item-list ul li {
+    margin: 0px;
+}
+
+.node ol, .node ul {
+  padding-left: 1.2em;
+  li {
+    padding-left: 1em;
+  }
+}
+
+.node ul.inline, .node ol.inline {
+  padding-left: 0;
+}
+
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
+  margin-bottom: @vspace;
+}
+
+dt, .admin h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+dd {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-bottom: @vspace;
+  padding-left: 10px;
+}
+
+ul, ol {
+  list-style-position: inside;
+}
+
+h1, h2, h3, h4, h5 {
+  color: @basetext;
+  a, a:link, a:hover, a:visited {
+    color: @basetext;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+a, a:link, a:hover, a:visited {
+  color: @a_normal;
+  text-decoration: none;
+}
+
+a:visited {
+  color: @a_visited;
+}
+// Do not mark visited link in menus etc. (sidebars generaly)
+#region-sidebar-first, #region-sidebar-second {
+  a:visited {
+    color: @basetext;
+  }
+}
+
+a:hover {
+  color: @a_hover;
+  text-decoration: underline;
+}
+
+
+/**********************
+       Sitewide
+***********************/
+#messages {
+  margin-bottom: @vspace*2;
+}
+
+// Nicer buttons
+#section-content, #section-footer {
+  .form-submit {
+    .button();
+  }
+}
+.views-field.button {
+  a {
+    .button();
+  }
+}
+
+
+/**********************
+   CONTENT-SPECIFIC
+***********************/
+
+// COMMERCE CHECKOUT
+// All checkout pages:
+.page-cart, .page-checkout {
+  // Nicer buttons
+  .form-submit {
+    .button();
+  }
+  #edit-cancel, #edit-back {
+    .button_grey();
+  }
+  .button-operator {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  // Align buttons to right
+  #edit-buttons {
+    text-align: right;
+  }
+}
+// Checkout pages one by one:
+// COMMERCE CHECKOUT PAGE: Cart overview
+.page-cart .view-commerce-cart-form {
+  // Make remove button less interesting
+  .delete-line-item {
+    .button_grey();
+  }
+  // Align buttons
+  #edit-submit {
+    margin-right: 20px;
+  }
+  #edit-checkout {
+    margin-right: 0px;
+  }
+}
+// COMMERCE CHECKOUT PAGE: Login form
+.page-checkout #commerce-checkout-form-login {
+  #user-login-form {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+// COMMERCE CHECKOUT PAGE: Billing and shipping information
+.page-cart .commerce-checkout-form-checkout {
+  // Table with cart contents
+  #edit-cart-contents {
+
+  }
+  // Choose shipping service
+  #edit-commerce-shipping {
+
+  }
+  // Textfields
+  #edit-account, #edit-customer-profile-shipping, #customer-profile-billing-ajax-wrapper {
+
+  }
+}
+// COMMERCE CHECKOUT PAGE: Order review
+.page-checkout-review .commerce-checkout-form-review {
+  // Table with all info
+  #edit-checkout-review {
+
+  }
+}
+// COMMERCE CHECKOUT PAGE: Order complete
+.page-checkout-complete .commerce-checkout-form-complete {
+
+}
+
+// Checkout process block
+#block-commerce-checkout-progress-indication {
+  ul.commerce-checkout-progress {
+    text-align: center;
+    li {
+      //background: url('../images/arrow.png') right center no-repeat;
+      margin: 0px;
+      padding-bottom: 1px;
+      padding-right: 18px;
+      margin-right: 5px;
+      width: auto;
+    }
+    li.last {
+      background: none;
+      padding-right: 0px;
+    }
+    li.active {
+      //color: @purple1;
+    }
+  }
+}
+
+// Shopping cart
+.view-commerce-cart-block {
+  .line-item-total {
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+  .views-row {
+    padding-bottom: 10px;
+  }
+  .line-item-summary {
+    text-align: left;
+    ul.links {
+      li.line-item-summary-view-cart {
+        padding-left: 0px !important;
+        background: none !important;
+      }
+      li.line-item-summary-view-cart:hover {
+        background: none !important;
+      }
+      .line-item-summary-view-cart a {
+        .button();
+      }
+    }
+  }
+}
