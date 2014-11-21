@@ -20,6 +20,7 @@
 
 //Tables
 @tableBackground: transparent;
+@tableBackgroundActive: transparent;
 @tableBackgroundEven: transparent;
 @tableBorder: 0px solid transparent;
 @bodyTheadBackground: transparent;
@@ -208,6 +209,9 @@
       text-align: left;
       vertical-align: top;
       border: @tableBorder;
+      &.active {
+        background-color: @tableBackgroundActive;
+      }
     }
     th {
       font-weight: bold;
